@@ -79,7 +79,7 @@ public class FindWord {
                     }
                 }
                 
-                /* look for word in diagnols*/
+                /* look for word in diagnols towards right bottom*/
                 compare = startChar.toString();
                 for (int k = 1; (i + k < matrix.size())
                         && (j + k < matrix.get(k).size())

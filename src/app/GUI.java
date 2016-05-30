@@ -6,7 +6,14 @@
 package app;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -57,6 +64,11 @@ public class GUI extends javax.swing.JFrame {
 
         jButton_Start.setBackground(new java.awt.Color(0, 204, 0));
         jButton_Start.setText("Execute");
+        jButton_Start.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_StartActionPerformed(evt);
+            }
+        });
 
         jTextField_imagePath.setEditable(false);
         jTextField_imagePath.setText("Select path to the image.");
@@ -111,6 +123,8 @@ public class GUI extends javax.swing.JFrame {
     private void jButton_selImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_selImageActionPerformed
             final JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")
                                                         +"\\resource")); 
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE FILES", "jpg", "jpg");
+            fc.setFileFilter(filter);
             int returnVal = fc.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 matrixImage = fc.getSelectedFile().toString();
@@ -123,8 +137,11 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_selImageActionPerformed
 
     private void jButton_selListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_selListActionPerformed
-        System.out.println(evt);            final JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")
+        System.out.println(evt);  
+        final JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")
                 + "\\resource"));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             lookUpList = fc.getSelectedFile().toString();
@@ -140,8 +157,23 @@ public class GUI extends javax.swing.JFrame {
  * @param evt 
  */
     private void jTextField_imagePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_imagePathActionPerformed
-//        AppMain.main(args);
+
     }//GEN-LAST:event_jTextField_imagePathActionPerformed
+
+    private void jButton_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StartActionPerformed
+        try {
+            AppMain.main(this.matrixImage, this.lookUpList);
+            JFrame showImage = new JFrame() ;
+            showImage.setSize(640, 640);
+            showImage.setVisible(true);
+            showImage.add(new JLabel(new ImageIcon(System.getProperty("user.dir") + 
+                                                    "\\resource"+"\\output.jpeg")));
+            
+        } catch (IOException ex) {
+            System.out.println("shit happened");
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_StartActionPerformed
 
     /**
      * @param args the command line arguments

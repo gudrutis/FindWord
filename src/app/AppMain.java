@@ -34,23 +34,24 @@ public class AppMain {
 	static{ 
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
         
-    public static void main(String[] args) throws IOException {
+    public static void main(String image,String lookUpList) throws IOException {
        
-        String imagePath = "resource\\find_small.jpg";
+//        String imagePath = "resource\\find_small.jpg";
+        String imagePath = image;
         File imageFile = new File(imagePath);
-        File imageFile1 = new File("C:\\Users\\Zygis\\Desktop\\tess_test_data\\Find_1lookup.jpg");
+//        File imageFile1 = new File("C:\\Users\\Zygis\\Desktop\\tess_test_data\\Find_1lookup.jpg");
         
-        ArrayList<String> lookupWords = new ArrayList<String>();
-        ArrayList<OcrChar[]> foundWords = new ArrayList<OcrChar[]>();
-        ArrayList<ArrayList<OcrChar>> matrix = new ArrayList<ArrayList<OcrChar>>();
+        ArrayList<String> lookupWords = new ArrayList<>();
+        ArrayList<OcrChar[]> foundWords = new ArrayList<>();
+        ArrayList<ArrayList<OcrChar>> matrix = new ArrayList<>();
                 
         Mat ImageMatrix = Imgcodecs.imread(imagePath);
 
-        Scanner inFile1 = new Scanner(new File("resource\\lookup.txt"));
+        Scanner inFile1 = new Scanner(new File(lookUpList));
         while (inFile1.hasNext()) {
             lookupWords.add(inFile1.nextLine().toUpperCase());
         }
-//        System.out.println(lookupWords);
+        System.out.println(lookupWords);
         
 //        lookupWords.add("a");
 //        lookupWords.add("BEJO");
@@ -70,7 +71,7 @@ public class AppMain {
             String result = instance.doOCR(imageFile);
 //            System.out.println(result);
             matrix = ParseHORC.parse(result);
-            
+            System.out.println(matrix);
             foundWords = FindWord.findWords(matrix, lookupWords);
             
 //            instance.setHocr(false);
@@ -95,21 +96,35 @@ public class AppMain {
                             new Scalar(0,0,0),3);
         }
         
-        for (OcrChar[] points : foundWords) {
-//           System.out.println(points[0].getCenterX()+" "+points[0].getCenterY()+" "+points[1].getCenterX()+" "+points[1].getCenterY());
-            Imgproc.line(ImageMatrix, new Point(points[0].getCenterX(), points[0].getCenterY()),
-                    new Point(points[1].getCenterX(), points[1].getCenterY()),
-                    new Scalar(0, 0, 0), 3);
-        }
+//        for (OcrChar[] points : foundWords) {
+////           System.out.println(points[0].getCenterX()+" "+points[0].getCenterY()+" "+points[1].getCenterX()+" "+points[1].getCenterY());
+//            Imgproc.line(ImageMatrix, new Point(points[0].getCenterX(), points[0].getCenterY()),
+//                    new Point(points[1].getCenterX(), points[1].getCenterY()),
+//                    new Scalar(0, 0, 0), 3);
+//        }
         
-        
-        for (ArrayList<OcrChar> line_array : matrix){
-            for (OcrChar Char : line_array){
-                Imgproc.putText(ImageMatrix, Char.toString(), 
-                        new Point(Char.x2, Char.y2+5),
-                                1, 2,  new Scalar(0, 0, 255));
-            }
-        }
+//        ////-------
+//        // DEBUG 
+//        //put regognised chars POSTION on the image ( to check recognised char matches)
+//        for (ArrayList<OcrChar> line_array : matrix) {
+//            for (OcrChar Char : line_array) {
+//                Imgproc.circle(ImageMatrix, new Point(Char.getCenterX(), Char.getCenterY()),
+//                        1, new Scalar(0, 0, 255), 4);
+//            }
+//        }
+
+
+
+//        ////-------
+//        // DEBUG 
+//        // put regognised chars back to the image ( to check recognised char matches)
+//        for (ArrayList<OcrChar> line_array : matrix){
+//            for (OcrChar Char : line_array){
+//                Imgproc.putText(ImageMatrix, Char.toString(), 
+//                        new Point(Char.x2, Char.y2),
+//                                1, 2,  new Scalar(0, 0, 255));
+//            }
+//        }
     
         Imgcodecs.imwrite("resource\\output.jpeg", ImageMatrix);
     } // <end> main
