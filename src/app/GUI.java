@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -120,6 +121,10 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This open dialog to select .txt file with words to find
+     * @param evt 
+     */
     private void jButton_selImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_selImageActionPerformed
             final JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")
                                                         +"\\resource")); 
@@ -135,7 +140,10 @@ public class GUI extends javax.swing.JFrame {
             }
             System.out.println(returnVal);
     }//GEN-LAST:event_jButton_selImageActionPerformed
-
+/**
+ * this opens dialog to select image on which you want to perform image procesing
+ * @param evt 
+ */
     private void jButton_selListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_selListActionPerformed
         System.out.println(evt);  
         final JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")
@@ -153,8 +161,9 @@ public class GUI extends javax.swing.JFrame {
         System.out.println(returnVal);
     }//GEN-LAST:event_jButton_selListActionPerformed
 /**
- * blabllballsdal sladl aldlas 
+ * 
  * @param evt 
+ * IGNORE ! (accidental function that I don't know how to delete on Netbeans)
  */
     private void jTextField_imagePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_imagePathActionPerformed
 
@@ -166,8 +175,10 @@ public class GUI extends javax.swing.JFrame {
             JFrame showImage = new JFrame() ;
             showImage.setSize(640, 640);
             showImage.setVisible(true);
-            showImage.add(new JLabel(new ImageIcon(System.getProperty("user.dir") + 
-                                                    "\\resource"+"\\output.jpeg")));
+            JLabel imageCotainer = new JLabel(new ImageIcon(System.getProperty("user.dir") + 
+                                                    "\\resource"+"\\output.jpeg"));
+            JScrollPane jsp = new JScrollPane(imageCotainer);
+            showImage.add(jsp);
             
         } catch (IOException ex) {
             System.out.println("shit happened");

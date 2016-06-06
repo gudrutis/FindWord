@@ -8,7 +8,7 @@ package app;
 import java.util.ArrayList;
 
 /**
- * This class should is for finding specified words in the letter matrix.
+ * This class  is for finding specified words in the letter matrix.
  * 
  * @author Zygis
  */

@@ -53,12 +53,7 @@ public class AppMain {
         }
         System.out.println(lookupWords);
         
-//        lookupWords.add("a");
-//        lookupWords.add("BEJO");
-//        lookupWords.add("BICHIR");
-//        lookupWords.add("BRANAGH");
-//        lookupWords.add("CHASTAIN");
-//        lookupWords.add("CLOONEY");
+
         
         Tesseract1 instance = new Tesseract1(); //
         try {
@@ -74,14 +69,15 @@ public class AppMain {
             System.out.println(matrix);
             foundWords = FindWord.findWords(matrix, lookupWords);
             
+            try (
 //            instance.setHocr(false);
 //            result = instance.doOCR(imageFile1);
 //            System.out.println(result);
 //            -----------
 //            writing info to html file
-            PrintWriter writer = new PrintWriter("the-file-name.html", "UTF-8");
-            writer.println(result);
-            writer.close();
+                    PrintWriter writer = new PrintWriter("the-file-name.html", "UTF-8")) {
+                writer.println(result);
+            }
         } catch (TesseractException e) {
             System.err.println(e.getMessage());
         }
