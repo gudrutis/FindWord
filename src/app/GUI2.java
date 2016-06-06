@@ -335,10 +335,16 @@ public class GUI2 extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Reset();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
+    /**
+     * this function preproces image to draw helper figures on top of image
+     * and then calls updateView()
+     */
     private void updateDrawings() {
         try {
+            
             image = originalImage.clone();
+            // draw Points as circles
             if (pointA1 != null) {
                 Imgproc.circle(image, pointA1, 10, new Scalar(0, 0, 255), 2);
             }
@@ -351,6 +357,18 @@ public class GUI2 extends javax.swing.JFrame {
             if (pointB2 != null) {
                 Imgproc.circle(image, pointB2, 10, new Scalar(255, 0, 0), 2);
             }
+            
+            // draw rectangles of selected circles
+            if (pointA1 != null & pointA2 != null) {
+                Imgproc.rectangle(image, pointA1, pointA2, new Scalar(0, 0, 255),
+                        2);
+            }     
+            
+             if (pointB1 != null & pointB2 != null) {
+                Imgproc.rectangle(image, pointB1, pointB2, new Scalar(255, 0, 0),
+                        2);
+            }           
+            
             updateView(image);
         } catch (Exception e) {
             System.err.println("Tryied to Draw without loading image" + e);
