@@ -12,11 +12,16 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.opencv.core.Mat;
 import app.utils.ImageProcessor;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import org.opencv.core.Core;
 import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 /**
  *
@@ -80,15 +85,17 @@ public class GUI2 extends javax.swing.JFrame {
         imageView.setLayout(imageViewLayout);
         imageViewLayout.setHorizontalGroup(
             imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 594, Short.MAX_VALUE)
-            .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(imageViewL, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
+            .addGroup(imageViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imageViewL, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+                .addContainerGap())
         );
         imageViewLayout.setVerticalGroup(
             imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
-            .addGroup(imageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(imageViewL, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imageViewL, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jScrollPane1.setViewportView(imageView);
@@ -101,12 +108,16 @@ public class GUI2 extends javax.swing.JFrame {
         });
 
         jButton2.setText("Start");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Renctagle for matrix");
 
         buttonGroup1.add(jRadioButtonA1);
-        jRadioButtonA1.setSelected(true);
         jRadioButtonA1.setText("PointA1");
         jRadioButtonA1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,8 +133,15 @@ public class GUI2 extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldA1.setEditable(false);
         jTextFieldA1.setText("X: - ; Y : - ;");
+        jTextFieldA1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldA1ActionPerformed(evt);
+            }
+        });
 
+        jTextFieldA2.setEditable(false);
         jTextFieldA2.setText("X: - ; Y : - ;");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -137,6 +155,7 @@ public class GUI2 extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldB1.setEditable(false);
         jTextFieldB1.setText("X: - ; Y : - ;");
 
         buttonGroup1.add(jRadioButtonB2);
@@ -147,6 +166,7 @@ public class GUI2 extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldB2.setEditable(false);
         jTextFieldB2.setText("X: - ; Y : - ;");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -162,25 +182,25 @@ public class GUI2 extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jRadioButtonA1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldA1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jRadioButtonA2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldA2)))
-                .addGap(40, 40, 40)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2)
+                        .addComponent(jTextFieldA2))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jRadioButtonB1)
+                        .addComponent(jRadioButtonA1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldB1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextFieldA1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jRadioButtonB2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldB2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jTextFieldB2, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jRadioButtonB1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldB1)))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,15 +239,15 @@ public class GUI2 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(4, 4, 4)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -237,19 +257,27 @@ public class GUI2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRadioButtonA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonA1ActionPerformed
-        // TODO add your handling code here:
+        pointA1 = new Point();
+        pointerToPoint = pointA1;
+        pointerToJextField = jTextFieldA1;
     }//GEN-LAST:event_jRadioButtonA1ActionPerformed
 
     private void jRadioButtonA2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonA2ActionPerformed
-        // TODO add your handling code here:
+        pointA2 = new Point();
+        pointerToPoint = pointA2;
+        pointerToJextField = jTextFieldA2;
     }//GEN-LAST:event_jRadioButtonA2ActionPerformed
 
     private void jRadioButtonB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonB1ActionPerformed
-        // TODO add your handling code here:
+        pointB1 = new Point();
+        pointerToPoint = pointB1;
+        pointerToJextField = jTextFieldB1;
     }//GEN-LAST:event_jRadioButtonB1ActionPerformed
 
     private void jRadioButtonB2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonB2ActionPerformed
-        // TODO add your handling code here:
+        pointB2 = new Point();
+        pointerToPoint = pointB2;
+        pointerToJextField = jTextFieldB2;
     }//GEN-LAST:event_jRadioButtonB2ActionPerformed
 
     /**
@@ -258,6 +286,7 @@ public class GUI2 extends javax.swing.JFrame {
      * @param evt
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Reset();
         final JFileChooser fc = new JFileChooser(new File(System.getProperty("user.dir")
                 + "\\resource"));
         FileNameExtensionFilter filter = new FileNameExtensionFilter("IMAGE FILES", "jpg", "jpg");
@@ -280,26 +309,84 @@ public class GUI2 extends javax.swing.JFrame {
      * @param evt
      */
     private void imageViewLMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageViewLMousePressed
-        ButtonModel selectedJRadioButton = buttonGroup1.getSelection();
-        if (selectedJRadioButton == jRadioButtonA1) {
-            System.out.println("worksA1");
-        } else if (selectedJRadioButton == jRadioButtonA2) {
-            System.out.println("worksA2");
-        } else if (selectedJRadioButton == jRadioButtonB1) {
-            System.out.println("worksB1");
-        } else if (selectedJRadioButton == jRadioButtonB2) {
-            System.out.println("worksB2");
-        } else {
-            System.out.println("Shit happenened");
+
+        if (pointerToJextField != null & pointerToPoint != null) {
+//            pointerToJextField.setText("X: "+ +";Y: ");
+            pointerToPoint.x = evt.getX();
+            pointerToPoint.y = evt.getY();
+            pointerToJextField.setText("X: " + pointerToPoint.x
+                    + ";Y: " + pointerToPoint.y + ";");
+//          System.out.println(buttonGroup1.getSelection() + "| " + evt.getX() + " " + evt.getY());
+            System.out.println(pointerToPoint);
+            System.out.print(pointA1);
+            System.out.print(pointA2);
+            System.out.print(pointB1);
+            System.out.println(pointB2);
+
         }
 
-        System.out.println(buttonGroup1.getSelection() + "| " + evt.getX() + " " + evt.getY());
+        updateDrawings();
     }//GEN-LAST:event_imageViewLMousePressed
 
+    private void jTextFieldA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldA1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldA1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Reset();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void updateDrawings() {
+        try {
+            image = originalImage.clone();
+            if (pointA1 != null) {
+                Imgproc.circle(image, pointA1, 10, new Scalar(0, 0, 255), 2);
+            }
+            if (pointA2 != null) {
+                Imgproc.circle(image, pointA2, 10, new Scalar(0, 0, 255), 2);
+            }
+            if (pointB1 != null) {
+                Imgproc.circle(image, pointB1, 10, new Scalar(255, 0, 0), 2);
+            }
+            if (pointB2 != null) {
+                Imgproc.circle(image, pointB2, 10, new Scalar(255, 0, 0), 2);
+            }
+            updateView(image);
+        } catch (Exception e) {
+            System.err.println("Tryied to Draw without loading image" + e);
+        }
+
+    }
+
     private void updateView(Mat newMat) {
+
         Image outputImage = imageProcessor.toBufferedImage(newMat);
         imageViewL.setIcon(new ImageIcon(outputImage));
 
+    }
+
+    /**
+     * reset all variables to default
+     */
+    private void Reset() {
+        this.imagePath = null;
+        this.image = null;
+        this.originalImage = null;
+        this.pointA1 = null;
+        this.pointA2 = null;
+        this.pointB1 = null;
+        this.pointB2 = null; // points of subimages
+
+        // this are pointers are used with radio buttons
+        this.pointerToPoint = null;
+        this.pointerToJextField = null;
+
+        jTextFieldA1.setText(coordinatePlaceholder);
+        jTextFieldA2.setText(coordinatePlaceholder);
+        jTextFieldB1.setText(coordinatePlaceholder);
+        jTextFieldB2.setText(coordinatePlaceholder);
+
+        buttonGroup1.clearSelection();
     }
 
     /**
@@ -339,8 +426,18 @@ public class GUI2 extends javax.swing.JFrame {
     // user difined variables
     private String imagePath;
     private Mat image, originalImage;
-    private Point PointA1, PointA2, PointB1, PointB2; // points of subimages
 
+    // points of subimages
+    private Point pointA1 = null;
+    private Point pointA2 = null;
+    private Point pointB1 = null;
+    private Point pointB2 = null;
+
+    // this are pointers are used with radio buttons
+    private Point pointerToPoint;
+    private JTextField pointerToJextField;
+
+    private final String coordinatePlaceholder = "X: - ; Y : - ;";
     private final ImageProcessor imageProcessor = new ImageProcessor();
 
 
@@ -367,3 +464,17 @@ public class GUI2 extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 }
+
+//// snipets
+//        ButtonModel selectedJRadioButton = buttonGroup1.getSelection();
+//        if (selectedJRadioButton == jRadioButtonA1) {
+//            System.out.println("worksA1");
+//        } else if (selectedJRadioButton == jRadioButtonA2) {
+//            System.out.println("worksA2");
+//        } else if (selectedJRadioButton == jRadioButtonB1) {
+//            System.out.println("worksB1");
+//        } else if (selectedJRadioButton == jRadioButtonB2) {
+//            System.out.println("worksB2");
+//        } else {
+//            System.out.println("Shit happenened");
+//        }
