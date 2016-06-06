@@ -13,10 +13,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.opencv.core.Mat;
 import app.utils.ImageProcessor;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import net.sourceforge.tess4j.TesseractException;
 import org.opencv.core.Core;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -294,14 +297,14 @@ public class GUI2 extends javax.swing.JFrame {
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             imagePath = fc.getSelectedFile().toString();
-            System.out.println("File path: " + imagePath + ".");
+//            System.out.println("File path: " + imagePath + ".");
         } else {
-            System.out.println(System.getProperty("user.dir") + "\\resource");
+//            System.out.println(System.getProperty("user.dir") + "\\resource");
         }
 
         originalImage = Imgcodecs.imread(imagePath);
         updateView(originalImage);
-        System.out.println(returnVal);
+//        System.out.println(returnVal);
     }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * get coordinates from image when pressed on it
@@ -317,15 +320,15 @@ public class GUI2 extends javax.swing.JFrame {
             pointerToJextField.setText("X: " + pointerToPoint.x
                     + ";Y: " + pointerToPoint.y + ";");
 //          System.out.println(buttonGroup1.getSelection() + "| " + evt.getX() + " " + evt.getY());
-            System.out.println(pointerToPoint);
-            System.out.print(pointA1);
-            System.out.print(pointA2);
-            System.out.print(pointB1);
-            System.out.println(pointB2);
+//            System.out.println(pointerToPoint);
+//            System.out.print(pointA1);
+//            System.out.print(pointA2);
+//            System.out.print(pointB1);
+//            System.out.println(pointB2);
 
         }
 
-        updateDrawings();
+        updateDrawings(this.originalImage);
     }//GEN-LAST:event_imageViewLMousePressed
 
     private void jTextFieldA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldA1ActionPerformed
@@ -333,42 +336,45 @@ public class GUI2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldA1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Reset();
-    }//GEN-LAST:event_jButton2ActionPerformed
-    
-    /**
-     * this function preproces image to draw helper figures on top of image
-     * and then calls updateView()
-     */
-    private void updateDrawings() {
         try {
-            
-            image = originalImage.clone();
+            image = AppMain.procesImage(originalImage.clone(),
+                    pointA1, pointA2, pointB1, pointB2);
+            updateDrawings(image);
+        } catch (TesseractException ex) {
+            Logger.getLogger(GUI2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * this function preproces image to draw helper figures on top of image and
+     * then calls updateView()
+     */
+    private void updateDrawings(Mat unprocesedImage) {
+        try {
+            image = unprocesedImage.clone();
             // draw Points as circles
             if (pointA1 != null) {
-                Imgproc.circle(image, pointA1, 10, new Scalar(0, 0, 255), 2);
+                Imgproc.circle(image, pointA1, 10, new Scalar(0, 0, 128), 2);
             }
             if (pointA2 != null) {
                 Imgproc.circle(image, pointA2, 10, new Scalar(0, 0, 255), 2);
             }
             if (pointB1 != null) {
-                Imgproc.circle(image, pointB1, 10, new Scalar(255, 0, 0), 2);
+                Imgproc.circle(image, pointB1, 10, new Scalar(128, 0, 0), 2);
             }
             if (pointB2 != null) {
                 Imgproc.circle(image, pointB2, 10, new Scalar(255, 0, 0), 2);
             }
-            
             // draw rectangles of selected circles
             if (pointA1 != null & pointA2 != null) {
                 Imgproc.rectangle(image, pointA1, pointA2, new Scalar(0, 0, 255),
                         2);
-            }     
-            
-             if (pointB1 != null & pointB2 != null) {
+            }
+            if (pointB1 != null & pointB2 != null) {
                 Imgproc.rectangle(image, pointB1, pointB2, new Scalar(255, 0, 0),
                         2);
-            }           
-            
+            }
+
             updateView(image);
         } catch (Exception e) {
             System.err.println("Tryied to Draw without loading image" + e);

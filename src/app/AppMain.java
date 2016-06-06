@@ -7,7 +7,10 @@ package app;
 
 // Unable to load library 'libtesseract304'
 // issprendziau nukopindamas .ddl failus tiesiai i projekta
+import app.utils.ImageProcessor;
 import com.sun.jna.Pointer;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -35,7 +38,86 @@ public class AppMain {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    // class    
+    /**
+     *
+     * @param image
+     * @param pointA
+     * @param pointB
+     * @return
+     * @throws TesseractException
+     */
+    public static ArrayList<String> extractWordList(BufferedImage image, Point pointA,
+            Point pointB) throws TesseractException {
+
+        ArrayList<String> lookupWords = new ArrayList<>();
+        int dimWidth = (int) ((int) pointB.x - pointA.x);
+        int dimHeight = (int) ((int) pointB.y - pointA.y);
+        java.awt.Point startPoint = new java.awt.Point((int) pointA.x, (int) pointA.y);
+        Dimension dim = new Dimension(dimWidth, dimHeight);
+        Rectangle renctArea = new Rectangle(startPoint, dim);
+        Tesseract1 instance = new Tesseract1();
+        instance.setHocr(false);
+
+        String result = instance.doOCR(image, renctArea);
+        String pattern = System.getProperty("line.separator");
+        String[] wordArray = result.split("\\r?\\n| ");
+
+        for (String word : wordArray) {
+            lookupWords.add(word);
+        }
+
+        System.out.println(lookupWords);
+        return lookupWords;
+    }
+
+    public static ArrayList<ArrayList<OcrChar>> extractLetterMatix(BufferedImage image,
+            Point pointA, Point pointB) throws TesseractException {
+        ArrayList<ArrayList<OcrChar>> matrix = new ArrayList<>();
+
+        int dimWidth = (int) ((int) pointB.x - pointA.x);
+        int dimHeight = (int) ((int) pointB.y - pointA.y);
+        java.awt.Point startPoint = new java.awt.Point((int) pointA.x, (int) pointA.y);
+        Dimension dim = new Dimension(dimWidth, dimHeight);
+        Rectangle renctArea = new Rectangle(startPoint, dim);
+
+        Tesseract1 instance = new Tesseract1(); //
+        instance.setHocr(true);
+        instance.setTessVariable("tessedit_char_blacklist", "|\\?/0123456789");
+        String result = instance.doOCR(image, renctArea);
+        matrix = ParseHORC.parse(result);
+        System.out.println(matrix);
+        return matrix;
+    }
+
+    public static ArrayList<OcrChar[]> findWords(ArrayList<ArrayList<OcrChar>> matrix,
+            ArrayList<String> lookupWords) {
+        ArrayList<OcrChar[]> foundWords = new ArrayList<>();
+        foundWords = FindWord.findWords(matrix, lookupWords);
+        return foundWords;
+    }
+
+    public static Mat crossImage(Mat image, ArrayList<OcrChar[]> foundWords) {
+        for (OcrChar[] points : foundWords) {
+            System.out.println(points[0].getCenterX()+" "+points[0].getCenterY()+" "+points[1].getCenterX()+" "+points[1].getCenterY());
+            Imgproc.line(image, new Point(points[0].getCenterX(), points[0].getCenterY()),
+                    new Point(points[1].getCenterX(), points[1].getCenterY()),
+                    new Scalar(0, 0, 0), 3);
+        }
+        return image;
+    }
+
+    public static Mat procesImage(Mat matImage, Point PtA1, Point PtA2, Point PtB1, Point PtB2) throws TesseractException {
+        final ImageProcessor imageProcessor = new ImageProcessor();
+
+        BufferedImage bfImage = imageProcessor.toBufferedImage(matImage);
+        ArrayList<ArrayList<OcrChar>> matrix = extractLetterMatix(bfImage, PtA1, PtA2);
+        ArrayList<String> lookupWords = extractWordList(bfImage, PtB1, PtB2);
+        ArrayList<OcrChar[]> foundWords = findWords(matrix, lookupWords);
+        matImage = crossImage(matImage, foundWords);
+
+        return matImage;
+    }
+
     /**
      * badly designed main aplication, use with app.GUI.java for fast results.
      *

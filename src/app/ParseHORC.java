@@ -74,13 +74,13 @@ public class ParseHORC {
 //-----------------------        
 //        test of array traversing
 //-----------
-        for (ArrayList<OcrChar> line_array : twoDArrayList){
-            for (OcrChar Char : line_array){
-                System.out.print(Char+":"+Char.getCenterX() +" "+Char.getCenterY()+"|" );
-//                System.out.print(Char+":"+Char.x1 +" "+Char.y1 +" "+Char.x2 +" "+Char.y2 +" "+"|" );
-            }
-            System.out.println("");
-        }
+//        for (ArrayList<OcrChar> line_array : twoDArrayList){
+//            for (OcrChar Char : line_array){
+//                System.out.print(Char+":"+Char.getCenterX() +" "+Char.getCenterY()+"|" );
+//               System.out.print(Char+":"+Char.x1 +" "+Char.y1 +" "+Char.x2 +" "+Char.y2 +" "+"|" );
+//            }
+//            System.out.println("");
+//        }
 
         return twoDArrayList;
         
