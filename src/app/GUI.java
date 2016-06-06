@@ -168,14 +168,17 @@ public class GUI extends javax.swing.JFrame {
     private void jTextField_imagePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_imagePathActionPerformed
 
     }//GEN-LAST:event_jTextField_imagePathActionPerformed
-
+/**
+ * this fires up the AppMain class and analise the aplication
+ * @param evt 
+ */
     private void jButton_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StartActionPerformed
         try {
             AppMain.main(this.matrixImage, this.lookUpList);
             JFrame showImage = new JFrame() ;
             showImage.setSize(640, 640);
             showImage.setVisible(true);
-            JLabel imageCotainer = new JLabel(new ImageIcon(System.getProperty("user.dir") + 
+                JLabel imageCotainer = new JLabel(new ImageIcon(System.getProperty("user.dir") + 
                                                     "\\resource"+"\\output.jpeg"));
             JScrollPane jsp = new JScrollPane(imageCotainer);
             showImage.add(jsp);

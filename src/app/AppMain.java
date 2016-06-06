@@ -30,21 +30,30 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class AppMain {
-    
-	static{ 
-            System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
-        
-    public static void main(String image,String lookUpList) throws IOException {
-       
+
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
+
+    // class    
+    /**
+     * badly designed main aplication, use with app.GUI.java for fast results.
+     *
+     * @param image
+     * @param lookUpList
+     * @throws IOException
+     */
+    public static void main(String image, String lookUpList) throws IOException {
+
 //        String imagePath = "resource\\find_small.jpg";
         String imagePath = image;
         File imageFile = new File(imagePath);
 //        File imageFile1 = new File("C:\\Users\\Zygis\\Desktop\\tess_test_data\\Find_1lookup.jpg");
-        
+
         ArrayList<String> lookupWords = new ArrayList<>();
         ArrayList<OcrChar[]> foundWords = new ArrayList<>();
         ArrayList<ArrayList<OcrChar>> matrix = new ArrayList<>();
-                
+
         Mat ImageMatrix = Imgcodecs.imread(imagePath);
 
         Scanner inFile1 = new Scanner(new File(lookUpList));
@@ -52,53 +61,50 @@ public class AppMain {
             lookupWords.add(inFile1.nextLine().toUpperCase());
         }
         System.out.println(lookupWords);
-        
 
-        
         Tesseract1 instance = new Tesseract1(); //
         try {
-            
+
             instance.setHocr(true);
             instance.setTessVariable("tessedit_char_blacklist", "|0123456789"); // blaklistas
 //          instance.setTessVariable("tessedit_create_boxfile", "true");
 //          instance.setTessVariable("save_blob_choices", "T"); // kazka padeda char atpazinimui
-            
+
             String result = instance.doOCR(imageFile);
 //            System.out.println(result);
             matrix = ParseHORC.parse(result);
             System.out.println(matrix);
             foundWords = FindWord.findWords(matrix, lookupWords);
-            
+
             try (
-//            instance.setHocr(false);
-//            result = instance.doOCR(imageFile1);
-//            System.out.println(result);
-//            -----------
-//            writing info to html file
+                    //            instance.setHocr(false);
+                    //            result = instance.doOCR(imageFile1);
+                    //            System.out.println(result);
+                    //            -----------
+                    //            writing info to html file
                     PrintWriter writer = new PrintWriter("the-file-name.html", "UTF-8")) {
                 writer.println(result);
             }
         } catch (TesseractException e) {
             System.err.println(e.getMessage());
         }
-        
+
         /*----- 
         cross found letters from the image
-        */
-        for ( OcrChar[] points : foundWords){
+         */
+        for (OcrChar[] points : foundWords) {
 //           System.out.println(points[0].getCenterX()+" "+points[0].getCenterY()+" "+points[1].getCenterX()+" "+points[1].getCenterY());
-            Imgproc.line(ImageMatrix, new Point(points[0].getCenterX(),points[0].getCenterY()), 
-                            new Point(points[1].getCenterX(),points[1].getCenterY()),
-                            new Scalar(0,0,0),3);
+            Imgproc.line(ImageMatrix, new Point(points[0].getCenterX(), points[0].getCenterY()),
+                    new Point(points[1].getCenterX(), points[1].getCenterY()),
+                    new Scalar(0, 0, 0), 3);
         }
-        
+
 //        for (OcrChar[] points : foundWords) {
 ////           System.out.println(points[0].getCenterX()+" "+points[0].getCenterY()+" "+points[1].getCenterX()+" "+points[1].getCenterY());
 //            Imgproc.line(ImageMatrix, new Point(points[0].getCenterX(), points[0].getCenterY()),
 //                    new Point(points[1].getCenterX(), points[1].getCenterY()),
 //                    new Scalar(0, 0, 0), 3);
 //        }
-        
 //        ////-------
 //        // DEBUG 
 //        //put regognised chars POSTION on the image ( to check recognised char matches)
@@ -108,9 +114,6 @@ public class AppMain {
 //                        1, new Scalar(0, 0, 255), 4);
 //            }
 //        }
-
-
-
 //        ////-------
 //        // DEBUG 
 //        // put regognised chars back to the image ( to check recognised char matches)
@@ -121,7 +124,6 @@ public class AppMain {
 //                                1, 2,  new Scalar(0, 0, 255));
 //            }
 //        }
-    
         Imgcodecs.imwrite("resource\\output.jpeg", ImageMatrix);
     } // <end> main
 }
