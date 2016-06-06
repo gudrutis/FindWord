@@ -63,7 +63,7 @@ public class AppMain {
         String[] wordArray = result.split("\\r?\\n| ");
 
         for (String word : wordArray) {
-            lookupWords.add(word);
+            lookupWords.add(word.toUpperCase());
         }
 
         System.out.println(lookupWords);
