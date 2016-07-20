@@ -40,9 +40,27 @@ public class GUI2 extends javax.swing.JFrame {
     }
 
     static {
-//            String libPathProperty = System.getProperty("java.library.path");
-//            System.out.println(libPathProperty);
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        // this will check architecture and dinamikli load
+//        System.out.println(System.getProperty("user.dir"));
+        String workingPath = System.getProperty("user.dir");
+        String arch = System.getProperty("sun.arch.data.model") ;
+        String sep = File.separator;
+//        System.setProperty( "java.library.path", "libs" );
+        if (arch.equals("64")){
+            String path = workingPath + sep + "libs" + sep + "x64"+sep +"opencv_java310.dll";
+//            System.setProperty( "java.library.path", "libs" );
+            System.load(path);
+        }else if (arch.equals("32")){
+            String path = workingPath + sep + "libs" + sep + "x86"+sep +"opencv_java310.dll";
+            System.load(path);
+//            System.loadLibrary("opencv_java310");
+        }else{
+        System.out.println("different architecture?: "+ arch );
+        }
+        
+
+//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            
     }
 
     /**

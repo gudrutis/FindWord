@@ -33,11 +33,38 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class AppMain {
+    
 
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
-
+/**
+ * 
+ * -Djava.library.path="C:\_CustLib\opencv\build\java\x86"
+ */
+//    static {
+//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+//    }
+        
+    /**
+     * This loads librarys second time ( first time is loaded from GUI2.java
+     * I use it for redundancy so that code will work with GUI1.java
+     */
+        static{
+        String workingPath = System.getProperty("user.dir");
+        String arch = System.getProperty("sun.arch.data.model") ;
+        String sep = File.separator;
+//        System.setProperty( "java.library.path", "libs" );
+        if (arch.equals("64")){
+            String path = workingPath + sep + "libs" + sep + "x64"+sep +"opencv_java310.dll";
+//            System.setProperty( "java.library.path", "libs" );
+            System.load(path);
+        }else if (arch.equals("32")){
+            String path = workingPath + sep + "libs" + sep + "x86"+sep +"opencv_java310.dll";
+            System.load(path);
+//            System.loadLibrary("opencv_java310");
+        }else{
+        System.out.println("different architecture?: "+ arch );
+        }
+        }
+    
     /**
      *
      * @param image
