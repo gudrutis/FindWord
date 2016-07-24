@@ -111,7 +111,7 @@ public class AppMain {
         instance.setHocr(true);
         instance.setTessVariable("tessedit_char_blacklist", "|\\?/0123456789");
         String result = instance.doOCR(image, renctArea);
-        matrix = ParseHORC.parse(result);
+        matrix = ParseHOCR.parse(result);
         System.out.println(matrix);
         return matrix;
     }
@@ -181,7 +181,7 @@ public class AppMain {
 
             String result = instance.doOCR(imageFile);
 //            System.out.println(result);
-            matrix = ParseHORC.parse(result);
+            matrix = ParseHOCR.parse(result);
             System.out.println(matrix);
             foundWords = FindWord.findWords(matrix, lookupWords);
 
