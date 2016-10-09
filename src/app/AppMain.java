@@ -128,7 +128,7 @@ public class AppMain {
             System.out.println(points[0].getCenterX()+" "+points[0].getCenterY()+" "+points[1].getCenterX()+" "+points[1].getCenterY());
             Imgproc.line(image, new Point(points[0].getCenterX(), points[0].getCenterY()),
                     new Point(points[1].getCenterX(), points[1].getCenterY()),
-                    new Scalar(0, 0, 0), 3);
+                    new Scalar(0, 0, 0), 1);
         }
         return image;
     }
@@ -205,7 +205,7 @@ public class AppMain {
 //           System.out.println(points[0].getCenterX()+" "+points[0].getCenterY()+" "+points[1].getCenterX()+" "+points[1].getCenterY());
             Imgproc.line(ImageMatrix, new Point(points[0].getCenterX(), points[0].getCenterY()),
                     new Point(points[1].getCenterX(), points[1].getCenterY()),
-                    new Scalar(0, 0, 0), 3);
+                    new Scalar(0, 0, 0), 1);
         }
 
 //        for (OcrChar[] points : foundWords) {
