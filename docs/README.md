@@ -16,3 +16,5 @@ Double click on chart canvas: auto reset zoom to fit everything
 bla bla bla bl
 
 ## subsection
+
+Some text to check if PDF is regenerated.
